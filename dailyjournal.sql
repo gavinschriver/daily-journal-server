@@ -74,4 +74,32 @@ INSERT INTO EntriesTags VALUES (null, 1, 2);
 INSERT INTO EntriesTags VALUES (null, 1, 3);
 INSERT INTO EntriesTags VALUES (null, 2, 1);
 
-SELECT * FROM EntriesTags
+SELECT * FROM EntriesTags;
+
+SELECT
+    e.id,
+    e.date,
+    e.topics,
+    e.entry,
+    e.moodId,
+    i.id instructor_id,
+    i.first_name,
+    i.last_name,
+    i.expertise,
+    m.id mood_id,
+    m.label,
+    et.id,
+    et.entryId,
+    et.tagId
+FROM Entries e
+JOIN Instructors i ON i.id = e.instructorId
+JOIN Moods m ON m.id = e.moodId
+JOIN EntriesTags et ON et.entryId = e.id
+WHERE e.id = 1;
+
+SELECT 
+            et.id,
+            et.tagId,
+            et.entryId  
+        FROM EntriesTags et      
+        WHERE et.entryId = 1     

@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import urllib
 
-from entries import get_all_entries, get_single_entry
+from entries import get_all_entries, get_single_entry, delete_entry
 from entriesTags import get_all_entriesTags
 from tags import get_all_tags
 from instructors import get_all_instructors
@@ -11,7 +11,8 @@ from moods import get_all_moods
 HANDLERS = {
     "entries": {
         "get_all": get_all_entries,
-        "get_single": get_single_entry
+        "get_single": get_single_entry,
+        "delete": delete_entry
     },
     "entriesTags": {
         "get_all": get_all_entriesTags,
@@ -72,7 +73,16 @@ class JournalRequestHandler(BaseHTTPRequestHandler):
         elif len(parsed) == 3:
             pass
 
-        self.wfile.write(response.encode())        
+        self.wfile.write(response.encode())
+
+    def do_DELETE(self):
+        (resource, id) = self.parse_url(self.path)
+        success = HANDLERS[resource]["delete"](id)
+        if success:
+            self._set_headers(204)
+        else: 
+            self._set_headers(404)
+        self.wfile.write("".encode())
 
 def main():
     host = ''

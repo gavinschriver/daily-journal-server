@@ -63,5 +63,16 @@ def get_single_entry(id):
         entry = Entry(row['id'], row['date'], row['topics'], row['entry'], mood, instructor).__dict__
         return json.dumps(entry)
 
-
+def delete_entry(id):
+    with sqlite3.connect("./dailyjournal.db") as con:
+        con.row_factory = sqlite3.Row
+        c = con.cursor()
+        c.execute('''
+        DELETE FROM Entries
+        WHERE Entries.id = ?
+        ''', (id, ))
+        if c.rowcount > 0:
+            return True
+        else:
+            return False
 
