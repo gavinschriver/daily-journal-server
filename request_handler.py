@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import urllib
 
-from entries import get_all_entries 
+from entries import get_all_entries, get_single_entry
 from entriesTags import get_all_entriesTags
 from tags import get_all_tags
 from instructors import get_all_instructors
@@ -11,7 +11,7 @@ from moods import get_all_moods
 HANDLERS = {
     "entries": {
         "get_all": get_all_entries,
-        # "get_single": get_single_entry
+        "get_single": get_single_entry
     },
     "entriesTags": {
         "get_all": get_all_entriesTags,
@@ -66,7 +66,7 @@ class JournalRequestHandler(BaseHTTPRequestHandler):
             (resourceName, id) = parsed
             handlerDict = HANDLERS[resourceName]
             if id is not None:
-                response = f"{handlerDict['get_single']}"
+                response = f"{handlerDict['get_single'](id)}"
             else:
                 response = f"{handlerDict['get_all']()}"
         elif len(parsed) == 3:
