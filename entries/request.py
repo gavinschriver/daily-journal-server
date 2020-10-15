@@ -20,4 +20,4 @@ def get_all_entries():
         data = cursor.fetchall()
         for row in data:
             entries.append(Entry(row['id'], row['date'], row['topics'], row['entry'], row['moodId'], row['instructorId']).__dict__)
-        return json.dumps(entries)
+    return json.dumps(entries)

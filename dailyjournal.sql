@@ -50,4 +50,12 @@ INSERT INTO Entries VALUES (null, "2020-08-27", "showing up and showing out", "t
 INSERT INTO Entries VALUES (null, "2020-10-12", "", "ooooof last night i got TOO RAGING TO CHEERS", 4, 3);
 INSERT INTO Entries VALUES (null, "2020-10-12", "raging more", "ooooof last night I STUDIED ReACT CLASS COMPONENTS", 2, 3);
 
-INSERT INTO Tags (null, "rompin");
+INSERT INTO Tags VALUES (null, "rompin");
+INSERT INTO Tags VALUES (null, "stompin");
+INSERT INTO Tags VALUES (null, "galompin");
+
+INSERT INTO EntriesTags VALUES (null, 1, 2);
+INSERT INTO EntriesTags VALUES (null, 1, 3);
+INSERT INTO EntriesTags VALUES (null, 2, 1);
+
+SELECT * FROM Tags

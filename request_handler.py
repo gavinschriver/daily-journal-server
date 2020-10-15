@@ -3,11 +3,33 @@ import json
 import urllib
 
 from entries import get_all_entries 
+from entriesTags import get_all_entriesTags
+from tags import get_all_tags
+from instructors import get_all_instructors
+from moods import get_all_moods
 
 HANDLERS = {
     "entries": {
-        "get_all": get_all_entries
+        "get_all": get_all_entries,
+        # "get_single": get_single_entry
+    },
+    "entriesTags": {
+        "get_all": get_all_entriesTags,
+        # "get_single": get_single_entryTag
+    },
+    "tags": {
+        "get_all": get_all_tags,
+        # "get_single": get_single_tag
+    },
+    "instructors": {
+        "get_all": get_all_instructors,
+        # "get_single": get_single_instructor
+    },
+    "moods": {
+        "get_all": get_all_moods,
+        # "get_single": get_single_mood
     }
+    
 }
 
 class JournalRequestHandler(BaseHTTPRequestHandler):
