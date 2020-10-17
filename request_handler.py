@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import urllib
 
-from entries import get_all_entries, get_single_entry, delete_entry
+from entries import get_all_entries, get_single_entry, save_entry, delete_entry
 from entriesTags import get_all_entriesTags
 from tags import get_all_tags
 from instructors import get_all_instructors
@@ -12,7 +12,8 @@ HANDLERS = {
     "entries": {
         "get_all": get_all_entries,
         "get_single": get_single_entry,
-        "delete": delete_entry
+        "delete": delete_entry,
+        "create": save_entry
     },
     "entriesTags": {
         "get_all": get_all_entriesTags,
@@ -62,7 +63,7 @@ class JournalRequestHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, FART')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type')
         self.end_headers()
 
@@ -90,6 +91,16 @@ class JournalRequestHandler(BaseHTTPRequestHandler):
         else: 
             self._set_headers(404)
         self.wfile.write("".encode())
+
+    def do_POST(self):
+        self._set_headers(201)
+        length =  int(self.headers.get('content-length', 0))
+        content = self.rfile.read(length)
+        content = json.loads(content)
+        (resource, id) = self.parse_url(self.path)
+        resource_creation_handler = HANDLERS[resource]["create"]
+        new_resource = resource_creation_handler(content)
+        self.wfile.write(f"{new_resource}".encode())  
 
 def main():
     host = ''

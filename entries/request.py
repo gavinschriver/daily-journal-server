@@ -63,6 +63,17 @@ def get_single_entry(id):
         entry = Entry(row['id'], row['date'], row['topics'], row['entry'], mood, instructor).__dict__
         return json.dumps(entry)
 
+def save_entry(entry):
+    with sqlite3.connect("./dailyjournal.db") as con:
+        c = con.cursor()
+        c.execute('''
+        INSERT INTO Entries
+            (date, topics, entry, moodId, instructorId)
+        VALUES (?, ?, ?, ?, ?)    
+        ''', (entry['date'], entry['topics'], entry['entry'], entry['moodId'], entry['instructorId'], ))
+        entry['id'] = c.lastrowid
+    return json.dumps(entry)    
+
 def delete_entry(id):
     with sqlite3.connect("./dailyjournal.db") as con:
         con.row_factory = sqlite3.Row
