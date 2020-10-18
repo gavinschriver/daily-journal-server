@@ -68,7 +68,6 @@ class JournalRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        self._set_headers(200)
         response = {}
         parsed = self.parse_url(self.path)
         if len(parsed) == 2:
@@ -76,6 +75,10 @@ class JournalRequestHandler(BaseHTTPRequestHandler):
             handlerDict = HANDLERS[resourceName]
             if id is not None:
                 response = f"{handlerDict['get_single'](id)}"
+                if response == 'Item not found':
+                    self._set_headers(404)
+                else:
+                    self._set_headers(200)
             else:
                 response = f"{handlerDict['get_all']()}"
         elif len(parsed) == 3:

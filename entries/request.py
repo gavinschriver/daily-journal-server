@@ -58,10 +58,13 @@ def get_single_entry(id):
         WHERE e.id = ?        
         ''', (id, ))
         row = c.fetchone()
-        instructor = Instructor(row['instructor_id'],row['first_name'], row['last_name'], row['expertise']).__dict__
-        mood = Mood(row['mood_id'], row['label']).__dict__
-        entry = Entry(row['id'], row['date'], row['topics'], row['entry'], mood, instructor).__dict__
-        return json.dumps(entry)
+        if row:
+            instructor = Instructor(row['instructor_id'],row['first_name'], row['last_name'], row['expertise']).__dict__
+            mood = Mood(row['mood_id'], row['label']).__dict__
+            entry = Entry(row['id'], row['date'], row['topics'], row['entry'], mood, instructor).__dict__
+            return json.dumps(entry)
+        else:
+            return 'Item not found'
 
 def save_entry(entry):
     with sqlite3.connect("./dailyjournal.db") as con:
