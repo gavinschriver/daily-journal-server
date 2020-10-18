@@ -80,6 +80,7 @@ class JournalRequestHandler(BaseHTTPRequestHandler):
                 else:
                     self._set_headers(200)
             else:
+                self._set_headers(200)
                 response = f"{handlerDict['get_all']()}"
         elif len(parsed) == 3:
             pass
